@@ -6,7 +6,7 @@ angular.module('app.controllers', [])
     // Request all events
     $http({
         method: 'GET',
-        url: 'http://localhost:8080/api/events'
+        url: 'http://localhost:8080/api/events?start=2016-05-28'
     }).then(function successCallback(data) {
         $scope.events = data;
     }, function errorCallback(response) {
