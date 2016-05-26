@@ -1,3 +1,12 @@
 <ion-view style="" class=" " id="page2" title="Tout à l'UTC">
-    <ion-content class="has-header" padding="true"></ion-content>
+    <ion-content class="has-header" padding="true">
+        <div>
+            <p>
+                All events :
+            </p>
+            <div ng-repeat="event in events.data">
+                 {{event.title}}
+            </div>
+        </div>
+    </ion-content>
 </ion-view>
