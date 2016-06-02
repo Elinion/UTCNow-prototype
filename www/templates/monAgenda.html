@@ -1,6 +1,23 @@
 <ion-view style="" class=" " id="page3" title="Mon agenda">
-    <ion-content class="has-header" padding="true">
-        <a class=" button button-positive  button-block " id="monAgenda-button23" ui-sref="tabsController.editerUnVNement">Ajouter (bouton temporaire)</a>
-        <a class=" button button-positive  button-block " id="monAgenda-button26" ui-sref="tabsController.carteVNement">Exemple d'event (bouton temp.)</a>
+
+    <ion-content class="has-header has-footer" padding="true">
+        <div class="button-bar">
+            <button class=" button button-positive button-full" style="">Filtrer</button>
+            <button class=" button button-balanced button-full" id="monAgenda-button23" ui-sref="tabsController.editerUnVNement" style="">Ajouter</button>
+        </div>
     </ion-content>
+    <ion-footer-bar align-title="center " class="bar-positive">
+
+        <div class="buttons">
+            <button class="button icon ion-chevron-left" ng-click="date.setDate(date.getDate()-1)"></button>
+        </div>
+
+        <h1 class="title" ng-click="showDatePopup()">
+            {{date | date:'dd-MM-yyyy'}}
+        </h1>
+
+        <div class="buttons">
+            <button class="button icon ion-chevron-right" ng-click="date.setDate(date.getDate()+1)"></button>
+        </div>
+    </ion-footer-bar>
 </ion-view>

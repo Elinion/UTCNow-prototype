@@ -14,7 +14,35 @@ angular.module('app.controllers', [])
     });
 })
    
-.controller('monAgendaCtrl', function($scope) {
+.controller('monAgendaCtrl', function($scope, $ionicPopup) {
+    $scope.date = new Date();
+
+    $scope.showDatePopup = function() {
+        $ionicPopup.show({
+            template: '<input type="date" ng-model="date">',
+            title: 'Aller à la date :',
+            subTitle: 'Choisissez la date à afficher',
+            scope: $scope,
+            buttons: [
+                {text: 'Annuler'},
+                {
+                    text: '<b>Go</b>',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        if (!date) {
+                            //Ne pas laisser entrer une date vide
+                            e.preventDefault();
+                        } else {
+
+                            return date;
+                            Console.log(date);
+                        }
+                    }
+                }
+            ]
+        });
+    };
+
 
 })
    
