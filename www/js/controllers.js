@@ -19,7 +19,7 @@ angular.module('app.controllers', [])
 
     $scope.showDatePopup = function() {
         $scope.data = {};
-
+        $scope.data.date = $scope.date;
         var datePopup = $ionicPopup.show({
             template: '<input type="date" ng-model="data.date">',
             title: 'Aller à la date :',
@@ -43,7 +43,7 @@ angular.module('app.controllers', [])
         });
 
         datePopup.then(function(res) {
-            console.log('New date:', res);
+            $scope.date = res;
         });
     };
 
