@@ -1,8 +1,8 @@
 <ion-view style="" class=" " id="page12" title="Editer un évènement">
-    <ion-content class="has-header" padding="true">
+    <ion-content class="has-header" padding="true" ng-controller="editerUnVNementCtrl">
         <form style="" class="list " id="editerUnVNement-form7">
             <label style="" id="editerUnVNement-input3" class="item item-input ">
-                <input placeholder="Nom de l'évènement" type="text">
+                <input placeholder="Nom de l'évènement" type="text" name="eventname" ng-model="eventname">
             </label>
             <label style="" id="editerUnVNement-input4" class="item item-input ">
                 <span class="input-label">Lieu</span>
@@ -35,10 +35,11 @@
                     <option>Covoiturage</option>
                 </select>
             </label>
+
+            <div style="" class=" button-bar " id="editerUnVNement-button-bar4">
+                <a class=" button button-stable  button-block " id="editerUnVNement-button17" ui-sref="tabsController.monAgenda">Annuler</a>
+                <button class=" button button-balanced  button-block " id="editerUnVNement-button19" ui-sref="tabsController.monAgenda" ng-click="submit(eventname)" >Enregistrer</button>
+            </div>
         </form>
-        <div style="" class=" button-bar " id="editerUnVNement-button-bar4">
-            <a class=" button button-stable  button-block " id="editerUnVNement-button17" ui-sref="tabsController.monAgenda">Annuler</a>
-            <a class=" button button-balanced  button-block " id="editerUnVNement-button19" ui-sref="tabsController.monAgenda">Enregistrer</a>
-        </div>
     </ion-content>
 </ion-view>
