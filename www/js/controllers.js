@@ -18,8 +18,10 @@ angular.module('app.controllers', [])
     $scope.date = new Date();
 
     $scope.showDatePopup = function() {
-        $ionicPopup.show({
-            template: '<input type="date" ng-model="date">',
+        $scope.data = {};
+        $scope.data.date = $scope.date;
+        var datePopup = $ionicPopup.show({
+            template: '<input type="date" ng-model="data.date">',
             title: 'Aller à la date :',
             subTitle: 'Choisissez la date à afficher',
             scope: $scope,
@@ -29,17 +31,19 @@ angular.module('app.controllers', [])
                     text: '<b>Go</b>',
                     type: 'button-positive',
                     onTap: function (e) {
-                        if (!date) {
+                        if (!$scope.data.date) {
                             //Ne pas laisser entrer une date vide
                             e.preventDefault();
                         } else {
-
-                            return date;
-                            Console.log(date);
+                            return $scope.data.date;
                         }
                     }
                 }
             ]
+        });
+
+        datePopup.then(function(res) {
+            $scope.date = res;
         });
     };
 
@@ -72,9 +76,9 @@ angular.module('app.controllers', [])
    
 .controller('editerUnVNementCtrl', function($scope) {
 
-    $scope.submit = function(eventname) {
+        $scope.submit = function(eventname) {
 
-        alert("Thanks to " + eventname);
+            alert("Thanks to " + eventname);
 
     }
 
