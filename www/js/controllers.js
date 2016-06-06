@@ -1,6 +1,11 @@
 angular.module('app.controllers', [])
   
 .controller('toutLUTCCtrl', function($scope, $http) {
+
+})
+
+.controller('monAgendaCtrl', function($scope, $ionicPopup) {
+    $scope.date = new Date();
     $scope.events = {};
 
     // Request all events
@@ -12,10 +17,6 @@ angular.module('app.controllers', [])
     }, function errorCallback(response) {
         console.log('Error: ' + response);
     });
-})
-   
-.controller('monAgendaCtrl', function($scope, $ionicPopup) {
-    $scope.date = new Date();
 
     $scope.showDatePopup = function() {
         $scope.data = {};
