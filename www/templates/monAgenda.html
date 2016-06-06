@@ -15,6 +15,10 @@
                 <div class="item item-text-wrap">
                     {{event.description}}
                 </div>
+                <div class="item item-divider">
+                    {{event.start | date:'H:mm dd-MM-yyyy'}}<br/>
+                    {{event.end | date:'H:mm dd-MM-yyyy'}}
+                </div>
             </div>
         </div>
 
