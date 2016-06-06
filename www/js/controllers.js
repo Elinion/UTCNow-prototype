@@ -76,6 +76,11 @@ angular.module('app.controllers', [])
 })
    
 .controller('editerUnVNementCtrl', function($scope) {
-    
+
+        $scope.submit = function(eventname) {
+
+            alert("Thanks to " + eventname);
+
+    }
+
 })
- 
