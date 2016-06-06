@@ -9,15 +9,14 @@
     <ion-content class="has-header has-subheader has-footer" padding="true">
         <div ng-repeat="event in events.data">
             <div class="card">
-                <div class="item item-divider">
-                    {{event.name}}
+                <div class="item item-avatar">
+                    <h2>{{event.name}}</h2>
+                    <p>
+                        {{event.start | date:'H:mm'}} - {{event.end | date:'H:mm'}}
+                    </p>
                 </div>
                 <div class="item item-text-wrap">
                     {{event.description}}
-                </div>
-                <div class="item item-divider">
-                    {{event.start | date:'H:mm dd-MM-yyyy'}}<br/>
-                    {{event.end | date:'H:mm dd-MM-yyyy'}}
                 </div>
             </div>
         </div>
