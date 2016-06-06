@@ -4,14 +4,14 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('monAgendaCtrl', function($scope, $ionicPopup) {
+.controller('monAgendaCtrl', function($scope, $http, $ionicPopup) {
     $scope.date = new Date();
     $scope.events = {};
 
     // Request all events
     $http({
         method: 'GET',
-        url: 'http://localhost:8080/api/events?start=2016-05-28'
+        url: 'http://utcnow.herokuapp.com/api/events'
     }).then(function successCallback(data) {
         $scope.events = data;
     }, function errorCallback(response) {
