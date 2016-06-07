@@ -71,20 +71,32 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('carteVNementCtrl', function($scope, $http, $stateParams, $http) {
-    var idevent = $stateParams.idevent;
+.controller('carteVNementCtrl', function($scope, $stateParams, $http) {
+    $scope.idevent = $stateParams.idevent;
     $scope.eventCard = {};
+    $scope.participantsEvent = {};
 
     // Request the event
     $http({
         method: 'GET',
-        url: 'http://utcnow.herokuapp.com/api/events/?id='+idevent
+        url: 'http://utcnow.herokuapp.com/api/events/?id='+$scope.idevent
     }).then(function successCallback(data) {
-        $scope.eventCard = data;
-        console.log(data);
+        $scope.eventCard = data.data[0];
     }, function errorCallback(response) {
         console.log('Error: ' + response);
     });
+
+    //Request participants de l'event
+    $http({
+        method: 'GET',
+        url: 'http://utcnow.herokuapp.com/api/users/?id_event='+$scope.idevent
+    }).then(function successCallback(data) {
+        $scope.participantsEvent = data;
+    }, function errorCallback(response) {
+        console.log('Error: ' + response);
+    });
+
+
 
 
 })

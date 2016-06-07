@@ -81,7 +81,7 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.editerUnVNement', {
-    url: '/editEvent',
+    url: '/editEvent/:idevent',
     views: {
       'tab2': {
         templateUrl: 'templates/editerUnVNement.html',
