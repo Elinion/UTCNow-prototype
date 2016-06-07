@@ -5,8 +5,30 @@ angular.module('app.controllers', [])
     })
 
     .controller('monAgendaCtrl', function ($scope, $http, $ionicPopup) {
+        var dateWithoutTime = function (date) {
+            var d = new Date(date);
+            d.setHours(0, 0, 0, 0);
+            return d;
+        }
+
+        // Date selected by the user (show today's events by default)
         $scope.date = new Date();
+
+        // An array of all events (of all times)
         $scope.events = {};
+
+        // An array of all events scheduled for the selected date only
+        $scope.selectedDateEvents = {};
+
+        // Automatically update selectedDateEvents whenever a new date is selected
+        $scope.$watch('date', function (newValue, oldValue) {
+            $scope.selectedDateEvents = [];
+            angular.forEach($scope.events.data, function (value, key) {
+                if (dateWithoutTime(newValue).getTime() == dateWithoutTime(value.start).getTime()) {
+                    $scope.selectedDateEvents.push(value);
+                }
+            });
+        }, true);
 
         // Request all events
         $http({
