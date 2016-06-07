@@ -71,7 +71,7 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.carteVNement', {
-    url: '/event',
+    url: '/event/:idevent',
     views: {
       'tab2': {
         templateUrl: 'templates/carteVNement.html',

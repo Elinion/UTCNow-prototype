@@ -71,7 +71,21 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('carteVNementCtrl', function($scope) {
+.controller('carteVNementCtrl', function($scope, $http, $stateParams, $http) {
+    var idevent = $stateParams.idevent;
+    $scope.eventCard = {};
+
+    // Request the event
+    $http({
+        method: 'GET',
+        url: 'http://utcnow.herokuapp.com/api/events/?id='+idevent
+    }).then(function successCallback(data) {
+        $scope.eventCard = data;
+        console.log(data);
+    }, function errorCallback(response) {
+        console.log('Error: ' + response);
+    });
+
 
 })
    
