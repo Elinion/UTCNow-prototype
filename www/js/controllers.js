@@ -100,13 +100,31 @@ angular.module('app.controllers', [])
 
 
 })
-   
-.controller('editerUnVNementCtrl', function($scope) {
 
-        $scope.submit = function(eventname) {
+.controller('editerUnVNementCtrl', function($scope,$http) {
 
-            alert("Thanks to " + eventname);
+        $scope.submit = function(eventname,eventlieu,eventdate,eventtimed,eventtimef,eventdesc,eventshow,eventag,eventshow) {
 
-    }
+            //alert(eventdate);
+            var dateDebut= new Date(eventdate.getFullYear(),eventdate.getMonth(),eventdate.getDate(),eventtimed.getHours()+2,eventtimed.getMinutes());
+            var dateFin= new Date(eventdate.getFullYear(),eventdate.getMonth(),eventdate.getDate(),eventtimef.getHours()+2,eventtimef.getMinutes());
+            var sDateDebut=dateDebut.toISOString();
+            var sDateFin=dateFin.toISOString();
+            sDateDebut=sDateDebut.replace("T"," ");
+            sDateFin=sDateFin.replace("T"," ");
+            sDateDebut=sDateDebut.replace(".000Z","");
+            sDateFin=sDateFin.replace(".000Z","");
+
+            $http({
+                method: 'POST',
+                url: 'http://utcnow.herokuapp.com/api/events?name='+eventname+'&start='+sDateDebut+'&end='+sDateFin+'&desc='+eventdesc
+            }).then(function successCallback(data) {
+                alert("it works !!!");
+            }, function errorCallback(data) {
+                alert("buuuug !!!");
+                console.log('Error: ' + data.toString());
+            });
+        }
+
 
 })
