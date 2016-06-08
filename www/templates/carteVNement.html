@@ -1,10 +1,10 @@
-<ion-view style="" class=" " id="page11" title="Carte évènement">
+<ion-view style="" class=" " id="page11" title="{{eventCard.name}}">
     <ion-content class="has-header" padding="true">
         <div style="" id="carteVNement-card2" class="list card ">
             <div class="item item-divider">{{eventCard.name}}</div>
             <div class="item item-body">
                 <h2 class=" " style="color: rgb(0, 0, 0);" id="carteVNement-heading4">{{eventCard.start}} - {{eventCard.end}}</h2>
-                <h3 class=" " style="color: rgb(0, 0, 0);" id="carteVNement-heading3">----DATA LIEU----</h3>
+                <h3 class=" " style="color: rgb(0, 0, 0);" id="carteVNement-heading3">{{eventCard.location}}</h3>
                 <p class=" " style="color: rgb(0, 0, 0);" id="carteVNement-markdown6">{{eventCard.description}}</p>
                 <a class=" button button-royal  button-block icon ion-edit " id="carteVNement-button24" ui-sref="tabsController.editerUnVNement({idevent: '{{idevent}}'})">Editer l'évènement</a>
                 <a class=" button button-assertive  button-block icon ion-close " id="carteVNement-button25" ng-click="delete()">Supprimer l'évènement</a>

@@ -189,21 +189,35 @@ angular.module('app.controllers', [])
         $scope.idevent = $stateParams.idevent;
         $scope.eventCard = {};
 
-        // Request the event
-        $http({
-            method: 'GET',
-            url: 'http://utcnow.herokuapp.com/api/events/?id='+$scope.idevent
-        }).then(function successCallback(data) {
-            $scope.eventCard = data.data[0];
+        if ($scope.idevent !=''){
+            $scope.pageedit_title = "Editer l'évènement";
+            // Request the event
+            $http({
+                method: 'GET',
+                url: 'http://utcnow.herokuapp.com/api/events/?id='+$scope.idevent
+            }).then(function successCallback(data) {
+                $scope.eventCard = data.data[0];
 
-            $scope.eventname = $scope.eventCard.name;
-            $scope.eventdate = new Date($scope.eventCard.start).getDay();
-            $scope.eventtimed = new Date($scope.eventCard.start).getTime();
-            $scope.eventtimef = new Date($scope.eventCard.end).getTime();
+                $scope.eventname = $scope.eventCard.name;
+                $scope.eventdate = new Date($scope.eventCard.start);
+                $scope.eventtimed = new Date($scope.eventCard.start);
+                $scope.eventtimef = new Date($scope.eventCard.end);
+                $scope.eventdesc = $scope.eventCard.description;
+                $scope.eventlieu = $scope.eventCard.location;
 
-        }, function errorCallback(response) {
-            console.log('Error: ' + response);
-        });
+            }, function errorCallback(response) {
+                console.log('Error: ' + response);
+            });
+        } else {
+            $scope.pageedit_title = "Créer un évènement";
+            var d = new Date();
+            d.setMinutes(0);
+            d.setSeconds(0);
+            d.setMilliseconds(0);
+            $scope.eventdate = $scope.eventtimed = $scope.eventtimef = d;
+
+        }
+
 
         $scope.submit = function (eventname, eventlieu, eventdate, eventtimed, eventtimef, eventdesc, eventshow, eventag, eventshow) {
 
@@ -217,15 +231,27 @@ angular.module('app.controllers', [])
             sDateDebut = sDateDebut.replace(".000Z", "");
             sDateFin = sDateFin.replace(".000Z", "");
 
+            if ($scope.idevent !='') {
+                //Mise à jour
+                $http({
+                    method: 'PUT',
+                    url: 'http://utcnow.herokuapp.com/api/events?id='+ $scope.idevent + '&name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
+                }).then(function successCallback(data) {
 
-            $http({
-                method: 'POST',
-                url: 'http://utcnow.herokuapp.com/api/events?name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
-            }).then(function successCallback(data) {
+                }, function errorCallback(data) {
+                    console.log('Error: ' + data.toString());
+                });
+            } else {
+                //Création d'un nouvel event
+                $http({
+                    method: 'POST',
+                    url: 'http://utcnow.herokuapp.com/api/events?name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
+                }).then(function successCallback(data) {
 
-            }, function errorCallback(data) {
-                console.log('Error: ' + data.toString());
-            });
+                }, function errorCallback(data) {
+                    console.log('Error: ' + data.toString());
+                });
+            }
         }
 
 
