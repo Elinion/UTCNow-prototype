@@ -6,11 +6,27 @@ angular.module('app.controllers', [])
                 var d = new Date(date);
                 d.setHours(0, 0, 0, 0);
                 return d;
+            },
+            // Used to set the event's background color according to their type
+            colorFromEventType: function (target, type) {
+                // Asso UTC
+                if (type == '1')
+                    return target + '-balanced';
+
+                // Perm PIC
+                if (type == '2')
+                    return target + '-energized';
+
+                // Examen
+                if (type == '3')
+                    return target + '-assertive';
+
+                return '';
             }
         };
     })
 
-    .controller('toutLUTCCtrl', function ($scope, $http) {
+    .controller('toutLUTCCtrl', function ($scope, $http, utilities) {
         // An array of all events (of all times)
         $scope.events = {};
 
@@ -20,7 +36,8 @@ angular.module('app.controllers', [])
         // Request all events
         $http({
             method: 'GET',
-            url: 'http://utcnow.herokuapp.com/api/events'
+            //url: 'http://utcnow.herokuapp.com/api/events'
+            url: 'http://localhost:8080/api/events'
         }).then(function successCallback(data) {
             $scope.events = data.data;
         }, function errorCallback(response) {
@@ -45,6 +62,8 @@ angular.module('app.controllers', [])
                 });
             }
         };
+
+        $scope.colorFromEventType = utilities.colorFromEventType;
     })
 
     .controller('monAgendaCtrl', function ($scope, $http, $ionicPopup, utilities) {
@@ -132,8 +151,6 @@ angular.module('app.controllers', [])
     })
 
 
-
-
     .controller('defaultAgendaCtrl', function ($scope) {
 
 
@@ -165,13 +182,13 @@ angular.module('app.controllers', [])
         });
 
 
-        $scope.delete=function () {
+        $scope.delete = function () {
 
             //headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-            $http.defaults.headers.delete = { "Content-Type": "application/json;charset=utf-8" }
+            $http.defaults.headers.delete = {"Content-Type": "application/json;charset=utf-8"}
             $http({
                 method: 'DELETE',
-                url: 'https://utcnow.herokuapp.com/api/events?id='+$scope.idevent,
+                url: 'https://utcnow.herokuapp.com/api/events?id=' + $scope.idevent,
                 header: {"Content-Type": "text/plain"}
             }).then(function successCallback(data) {
                 alert("it works !!!");
@@ -185,16 +202,16 @@ angular.module('app.controllers', [])
     })
 
 
-    .controller('editerUnVNementCtrl', function($scope,$http, $stateParams) {
+    .controller('editerUnVNementCtrl', function ($scope, $http, $stateParams) {
         $scope.idevent = $stateParams.idevent;
         $scope.eventCard = {};
 
-        if ($scope.idevent !=''){
+        if ($scope.idevent != '') {
             $scope.pageedit_title = "Editer l'évènement";
             // Request the event
             $http({
                 method: 'GET',
-                url: 'http://utcnow.herokuapp.com/api/events/?id='+$scope.idevent
+                url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.idevent
             }).then(function successCallback(data) {
                 $scope.eventCard = data.data[0];
 
@@ -231,11 +248,11 @@ angular.module('app.controllers', [])
             sDateDebut = sDateDebut.replace(".000Z", "");
             sDateFin = sDateFin.replace(".000Z", "");
 
-            if ($scope.idevent !='') {
+            if ($scope.idevent != '') {
                 //Mise à jour
                 $http({
                     method: 'PUT',
-                    url: 'http://utcnow.herokuapp.com/api/events?id='+ $scope.idevent + '&name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
+                    url: 'http://utcnow.herokuapp.com/api/events?id=' + $scope.idevent + '&name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
                 }).then(function successCallback(data) {
 
                 }, function errorCallback(data) {
