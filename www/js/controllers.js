@@ -101,7 +101,25 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('editerUnVNementCtrl', function($scope,$http) {
+.controller('editerUnVNementCtrl', function($scope,$http, $stateParams) {
+    $scope.idevent = $stateParams.idevent;
+    $scope.eventCard = {};
+
+    // Request the event
+    $http({
+        method: 'GET',
+        url: 'http://utcnow.herokuapp.com/api/events/?id='+$scope.idevent
+    }).then(function successCallback(data) {
+        $scope.eventCard = data.data[0];
+        
+        $scope.eventname = $scope.eventCard.name;
+        $scope.eventdate = new Date($scope.eventCard.start);
+        $scope.eventtimed = new Date($scope.eventCard.start);
+        $scope.eventtimef = new Date($scope.eventCard.end);
+
+    }, function errorCallback(response) {
+        console.log('Error: ' + response);
+    });
 
         $scope.submit = function(eventname,eventlieu,eventdate,eventtimed,eventtimef,eventdesc,eventshow,eventag,eventshow) {
 
@@ -119,9 +137,8 @@ angular.module('app.controllers', [])
                 method: 'POST',
                 url: 'http://utcnow.herokuapp.com/api/events?name='+eventname+'&start='+sDateDebut+'&end='+sDateFin+'&desc='+eventdesc
             }).then(function successCallback(data) {
-                alert("it works !!!");
+                
             }, function errorCallback(data) {
-                alert("buuuug !!!");
                 console.log('Error: ' + data.toString());
             });
         }
