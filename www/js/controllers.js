@@ -1,90 +1,136 @@
 angular.module('app.controllers', [])
-  
-.controller('toutLUTCCtrl', function($scope, $http) {
+    .factory('utilities', function () {
+        return {
+            // Used to compare only, day/month/year part of Date objects
+            dateWithoutTime: function (date) {
+                var d = new Date(date);
+                d.setHours(0, 0, 0, 0);
+                return d;
+            }
+        };
+    })
 
-})
+    .controller('toutLUTCCtrl', function ($scope, $http) {
+        // An array of all events (of all times)
+        $scope.events = {};
 
-.controller('monAgendaCtrl', function($scope, $http, $ionicPopup) {
-    $scope.date = new Date();
-    $scope.events = {};
+        // An array of all events matching the search field
+        $scope.matchingEvents = [];
 
-    // Request all events
-    $http({
-        method: 'GET',
-        url: 'http://utcnow.herokuapp.com/api/events'
-    }).then(function successCallback(data) {
-        $scope.events = data;
-    }, function errorCallback(response) {
-        console.log('Error: ' + response);
-    });
+        // Request all events
+        $http({
+            method: 'GET',
+            url: 'http://utcnow.herokuapp.com/api/events'
+        }).then(function successCallback(data) {
+            $scope.events = data.data;
+        }, function errorCallback(response) {
+            console.log('Error: ' + response);
+        });
 
-    $scope.showDatePopup = function() {
-        $scope.data = {};
-        $scope.data.date = $scope.date;
-        var datePopup = $ionicPopup.show({
-            template: '<input type="date" ng-model="data.date">',
-            title: 'Aller à la date :',
-            subTitle: 'Choisissez la date à afficher',
-            scope: $scope,
-            buttons: [
-                {text: 'Annuler'},
-                {
-                    text: '<b>Go</b>',
-                    type: 'button-positive',
-                    onTap: function (e) {
-                        if (!$scope.data.date) {
-                            //Ne pas laisser entrer une date vide
-                            e.preventDefault();
-                        } else {
-                            return $scope.data.date;
+        // Update the events showed when the users modifies the search field
+        $scope.updateMatchingEvents = function (newValue) {
+            $scope.matchingEvents = [];
+
+            // If no text was entered in the search field, show all events in chronological order
+            if (newValue == 0) {
+                $scope.matchingEvents = $scope.events;
+            }
+            // Otherwise show the events that match the text entered
+            // To do so, we check if that text is present in the event name, description or location
+            else {
+                angular.forEach($scope.events, function (value, key) {
+                    if (value.name.search(new RegExp(newValue, "i")) > -1 || value.description.search(new RegExp(newValue, "i")) > -1) {
+                        $scope.matchingEvents.push(value);
+                    }
+                });
+            }
+        };
+    })
+
+    .controller('monAgendaCtrl', function ($scope, $http, $ionicPopup, utilities) {
+        // Date selected by the user (show today's events by default)
+        $scope.date = new Date();
+
+        // An array of all events (of all times)
+        $scope.events = {};
+
+        // An array of all events scheduled for the selected date only
+        $scope.selectedDateEvents = {};
+
+        // Automatically update selectedDateEvents whenever a new date is selected
+        $scope.$watch('date', function (newValue, oldValue) {
+            $scope.selectedDateEvents = [];
+            angular.forEach($scope.events, function (value, key) {
+                if (utilities.dateWithoutTime(newValue).getTime() == utilities.dateWithoutTime(value.start).getTime()) {
+                    $scope.selectedDateEvents.push(value);
+                }
+            });
+        }, true);
+
+        // Request all events
+        $http({
+            method: 'GET',
+            url: 'http://utcnow.herokuapp.com/api/events'
+        }).then(function successCallback(data) {
+            $scope.events = data.data;
+        }, function errorCallback(response) {
+            console.log('Error: ' + response);
+        });
+
+        $scope.showDatePopup = function () {
+            $scope.data = {};
+            $scope.data.date = $scope.date;
+            var datePopup = $ionicPopup.show({
+                template: '<input type="date" ng-model="data.date">',
+                title: 'Aller à la date :',
+                subTitle: 'Choisissez la date à afficher',
+                scope: $scope,
+                buttons: [
+                    {
+                        // Return the initial date if the player cancels the popup
+                        text: 'Annuler',
+                        onTap: function () {
+                            return $scope.date;
+                        }
+                    },
+                    {
+                        text: '<b>Go</b>',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            if (!$scope.data.date) {
+                                e.preventDefault();
+                            } else {
+                                return $scope.data.date;
+                            }
                         }
                     }
-                }
-            ]
-        });
+                ]
+            });
 
-        datePopup.then(function(res) {
-            $scope.date = res;
-        });
-    };
+            datePopup.then(function (res) {
+                $scope.date = res;
+            });
+        };
 
 
-})
-   
-.controller('agendasFavorisCtrl', function($scope) {
+    })
 
-})
-         
-.controller('bienvenueCtrl', function($scope) {
+    .controller('agendasFavorisCtrl', function ($scope) {
 
-})
-   
-.controller('paramTresCtrl', function($scope) {
+    })
 
-})
-   
-.controller('ProposCtrl', function($scope) {
+    .controller('bienvenueCtrl', function ($scope) {
 
-})
-   
-.controller('defaultAgendaCtrl', function($scope) {
+    })
 
-})
-   
-.controller('carteVNementCtrl', function($scope, $stateParams, $http) {
-    $scope.idevent = $stateParams.idevent;
-    $scope.eventCard = {};
-    $scope.participantsEvent = {};
+    .controller('paramTresCtrl', function ($scope) {
 
-    // Request the event
-    $http({
-        method: 'GET',
-        url: 'http://utcnow.herokuapp.com/api/events/?id='+$scope.idevent
-    }).then(function successCallback(data) {
-        $scope.eventCard = data.data[0];
-    }, function errorCallback(response) {
-        console.log('Error: ' + response);
-    });
+    })
+
+    .controller('ProposCtrl', function ($scope) {
+
+    })
+
 
     //Request participants de l'event
     $http({
@@ -113,29 +159,57 @@ angular.module('app.controllers', [])
         
     }
 
+    .controller('defaultAgendaCtrl', function ($scope) {
 
 
+    })
 
-})
+    .controller('carteVNementCtrl', function ($scope, $stateParams, $http) {
+        $scope.idevent = $stateParams.idevent;
+        $scope.eventCard = {};
+        $scope.participantsEvent = {};
 
-.controller('editerUnVNementCtrl', function($scope,$http) {
+        // Request the event
+        $http({
+            method: 'GET',
+            url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.idevent
+        }).then(function successCallback(data) {
+            $scope.eventCard = data.data[0];
+        }, function errorCallback(response) {
+            console.log('Error: ' + response);
+        });
 
-        $scope.submit = function(eventname,eventlieu,eventdate,eventtimed,eventtimef,eventdesc,eventshow,eventag,eventshow) {
+        //Request participants de l'event
+        $http({
+            method: 'GET',
+            url: 'http://utcnow.herokuapp.com/api/users/?id_event=' + $scope.idevent
+        }).then(function successCallback(data) {
+            $scope.participantsEvent = data;
+        }, function errorCallback(response) {
+            console.log('Error: ' + response);
+        });
+
+
+    })
+
+    .controller('editerUnVNementCtrl', function ($scope, $http) {
+
+        $scope.submit = function (eventname, eventlieu, eventdate, eventtimed, eventtimef, eventdesc, eventshow, eventag, eventshow) {
 
             //alert(eventdate);
-            var dateDebut= new Date(eventdate.getFullYear(),eventdate.getMonth(),eventdate.getDate(),eventtimed.getHours()+2,eventtimed.getMinutes());
-            var dateFin= new Date(eventdate.getFullYear(),eventdate.getMonth(),eventdate.getDate(),eventtimef.getHours()+2,eventtimef.getMinutes());
-            var sDateDebut=dateDebut.toISOString();
-            var sDateFin=dateFin.toISOString();
-            sDateDebut=sDateDebut.replace("T"," ");
-            sDateFin=sDateFin.replace("T"," ");
-            sDateDebut=sDateDebut.replace(".000Z","");
-            sDateFin=sDateFin.replace(".000Z","");
+            var dateDebut = new Date(eventdate.getFullYear(), eventdate.getMonth(), eventdate.getDate(), eventtimed.getHours() + 2, eventtimed.getMinutes());
+            var dateFin = new Date(eventdate.getFullYear(), eventdate.getMonth(), eventdate.getDate(), eventtimef.getHours() + 2, eventtimef.getMinutes());
+            var sDateDebut = dateDebut.toISOString();
+            var sDateFin = dateFin.toISOString();
+            sDateDebut = sDateDebut.replace("T", " ");
+            sDateFin = sDateFin.replace("T", " ");
+            sDateDebut = sDateDebut.replace(".000Z", "");
+            sDateFin = sDateFin.replace(".000Z", "");
 
 
             $http({
                 method: 'POST',
-                url: 'http://utcnow.herokuapp.com/api/events?name='+eventname+'&start='+sDateDebut+'&end='+sDateFin+'&desc='+eventdesc
+                url: 'http://utcnow.herokuapp.com/api/events?name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
             }).then(function successCallback(data) {
                // alert("it works !!!");
             }, function errorCallback(data) {
@@ -145,4 +219,4 @@ angular.module('app.controllers', [])
         }
 
 
-})
+    })

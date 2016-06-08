@@ -3,11 +3,13 @@
     <div class="bar bar-subheader bar-light">
         <div class="button-bar">
             <button class=" button button-positive button-full" style="">Filtrer</button>
-            <button class=" button button-balanced button-full" id="monAgenda-button23" ui-sref="tabsController.editerUnVNement" style="">Ajouter</button>
+            <button class=" button button-balanced button-full" id="monAgenda-button23"
+                    ui-sref="tabsController.editerUnVNement" style="">Ajouter
+            </button>
         </div>
     </div>
     <ion-content class="has-header has-subheader has-footer" padding="true">
-        <div ng-repeat="event in events.data">
+        <div ng-repeat="event in selectedDateEvents">
             <div class="card" ui-sref="tabsController.carteVNement({idevent: '{{event.id_event}}'})">
                 <div class="item item-avatar">
                     <h2>{{event.name}}</h2>
@@ -20,8 +22,6 @@
                 </div>
             </div>
         </div>
-
-
     </ion-content>
     <ion-footer-bar align-title="center " class="bar-positive">
 
