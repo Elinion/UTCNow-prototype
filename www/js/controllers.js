@@ -1,16 +1,53 @@
 angular.module('app.controllers', [])
-
-    .controller('toutLUTCCtrl', function ($scope, $http) {
-
+    .factory('utilities', function () {
+        return {
+            // Used to compare only, day/month/year part of Date objects
+            dateWithoutTime: function (date) {
+                var d = new Date(date);
+                d.setHours(0, 0, 0, 0);
+                return d;
+            }
+        };
     })
 
-    .controller('monAgendaCtrl', function ($scope, $http, $ionicPopup) {
-        var dateWithoutTime = function (date) {
-            var d = new Date(date);
-            d.setHours(0, 0, 0, 0);
-            return d;
-        }
+    .controller('toutLUTCCtrl', function ($scope, $http) {
+        // An array of all events (of all times)
+        $scope.events = {};
 
+        // An array of all events matching the search field
+        $scope.matchingEvents = [];
+
+        // Request all events
+        $http({
+            method: 'GET',
+            url: 'http://utcnow.herokuapp.com/api/events'
+        }).then(function successCallback(data) {
+            $scope.events = data.data;
+        }, function errorCallback(response) {
+            console.log('Error: ' + response);
+        });
+
+        // Update the events showed when the users modifies the search field
+        $scope.updateMatchingEvents = function (newValue) {
+            $scope.matchingEvents = [];
+
+            // If no text was entered in the search field, show all events in chronological order
+            if (newValue == 0) {
+                $scope.matchingEvents = $scope.events;
+            }
+            // Otherwise show the events that match the text entered
+            // To do so, we check if that text is present in the event name, description or location
+            else {
+                angular.forEach($scope.events, function (value, key) {
+                    if (value.name.search(new RegExp(newValue, "i")) > -1 || value.description.search(new RegExp(newValue, "i")) > -1) {
+                        $scope.matchingEvents.push(value);
+                    }
+                });
+            }
+        };
+    })
+
+    .controller('monAgendaCtrl', function ($scope, $http, $ionicPopup, utilities) {
         // Date selected by the user (show today's events by default)
         $scope.date = new Date();
 
@@ -23,8 +60,8 @@ angular.module('app.controllers', [])
         // Automatically update selectedDateEvents whenever a new date is selected
         $scope.$watch('date', function (newValue, oldValue) {
             $scope.selectedDateEvents = [];
-            angular.forEach($scope.events.data, function (value, key) {
-                if (dateWithoutTime(newValue).getTime() == dateWithoutTime(value.start).getTime()) {
+            angular.forEach($scope.events, function (value, key) {
+                if (utilities.dateWithoutTime(newValue).getTime() == utilities.dateWithoutTime(value.start).getTime()) {
                     $scope.selectedDateEvents.push(value);
                 }
             });
@@ -35,7 +72,7 @@ angular.module('app.controllers', [])
             method: 'GET',
             url: 'http://utcnow.herokuapp.com/api/events'
         }).then(function successCallback(data) {
-            $scope.events = data;
+            $scope.events = data.data;
         }, function errorCallback(response) {
             console.log('Error: ' + response);
         });
