@@ -9,7 +9,14 @@
         </div>
     </div>
     <ion-content class="has-header has-subheader has-footer" padding="true">
-        <div ng-repeat="event in selectedDateEvents">
+        <div ng-if="selectedDateEvents.length == 0">
+            <div class="card">
+                <div class="item item-text-wrap">
+                    Aucun evenement prevu a ce jour.
+                </div>
+            </div>
+        </div>
+        <div ng-if="selectedDateEvents.length != 0" ng-repeat="event in selectedDateEvents">
             <div class="card" ui-sref="tabsController.carteVNement({idevent: '{{event.id_event}}'})">
                 <div class="item item-avatar">
                     <h2>{{event.name}}</h2>

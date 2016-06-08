@@ -3,9 +3,11 @@
         <ion-list style="" class=" " id="agendasFavoris-list7">
             <label style="" class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
-                <input placeholder="Rechercher un evenement.." type="search" ng-model="search" ng-change="updateMatchingEvents(search)">
+                <input placeholder="Rechercher un evenement.." type="search" ng-model="search"
+                       ng-change="updateMatchingEvents(search)">
             </label>
         </ion-list>
+
         <div ng-repeat="event in matchingEvents">
             <div class="card" ui-sref="tabsController.carteVNement({idevent: '{{event.id_event}}'})">
                 <div class="item item-avatar">
@@ -19,6 +21,7 @@
                 </div>
             </div>
         </div>
+
     </ion-content>
 
 
