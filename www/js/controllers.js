@@ -132,32 +132,7 @@ angular.module('app.controllers', [])
     })
 
 
-    //Request participants de l'event
-    $http({
-        method: 'GET',
-        url: 'http://utcnow.herokuapp.com/api/users/?id_event='+$scope.idevent
-    }).then(function successCallback(data) {
-        $scope.participantsEvent = data;
-    }, function errorCallback(response) {
-        console.log('Error: ' + response);
-    });
-    
-    $scope.delete=function () {
 
-        //headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-        $http.defaults.headers.delete = { "Content-Type": "application/json;charset=utf-8" }
-        $http({
-                method: 'DELETE',
-                url: 'https://utcnow.herokuapp.com/api/events?id='+$scope.idevent,
-                header: {"Content-Type": "text/plain"}
-            }).then(function successCallback(data) {
-                alert("it works !!!");
-            }, function errorCallback(data) {
-                alert("buuuug !!!");
-                console.log('Error: ' + data.toString());
-            });
-        
-    }
 
     .controller('defaultAgendaCtrl', function ($scope) {
 
@@ -188,6 +163,23 @@ angular.module('app.controllers', [])
         }, function errorCallback(response) {
             console.log('Error: ' + response);
         });
+
+
+        $scope.delete=function () {
+
+            //headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+            $http.defaults.headers.delete = { "Content-Type": "application/json;charset=utf-8" }
+            $http({
+                method: 'DELETE',
+                url: 'https://utcnow.herokuapp.com/api/events?id='+$scope.idevent,
+                header: {"Content-Type": "text/plain"}
+            }).then(function successCallback(data) {
+                alert("it works !!!");
+            }, function errorCallback(data) {
+                alert("buuuug !!!");
+                console.log('Error: ' + data.toString());
+            });
+        }
 
 
     })
