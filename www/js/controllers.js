@@ -51,6 +51,7 @@ angular.module('app.controllers', [])
     .controller('monAgendaCtrl', function ($scope, $http, $ionicPopup, utilities) {
         // Date selected by the user (show today's events by default)
         $scope.date = new Date();
+        $scope.platform = ionic.Platform.platform();
 
         // An array of all events (of all times)
         $scope.events = {};

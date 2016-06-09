@@ -1,6 +1,6 @@
 <ion-view style="" class=" " id="page3" title="Mon agenda">
 
-    <div class="bar bar-subheader bar-light">
+    <div ng-if="platform != 'android'" class="bar bar-subheader bar-light">
         <div class="button-bar">
             <button class=" button button-positive button-full" style="">Filtrer</button>
             <button class=" button button-balanced button-full" id="monAgenda-button23"
@@ -8,7 +8,7 @@
             </button>
         </div>
     </div>
-    <ion-content class="has-header has-subheader has-footer" padding="true">
+    <ion-content class="has-header has-footer" ng-class="{'has-subfooter': platform == 'android', 'has-subheader': platform != 'android'}" padding="true">
         <div ng-repeat="event in selectedDateEvents">
             <div class="card" ui-sref="tabsController.carteVNement({idevent: '{{event.id_event}}'})">
                 <div class="item item-icon-left">
@@ -24,6 +24,14 @@
             </div>
         </div>
     </ion-content>
+    <div ng-if="platform == 'android'" class="bar bar-subfooter bar-light">
+        <div class="button-bar">
+            <button class=" button button-positive button-full" style="">Filtrer</button>
+            <button class=" button button-balanced button-full" id="monAgenda-button23"
+                    ui-sref="tabsController.editerUnVNement" style="">Ajouter
+            </button>
+        </div>
+    </div>
     <ion-footer-bar align-title="center " class="bar-positive">
 
         <div class="buttons">
