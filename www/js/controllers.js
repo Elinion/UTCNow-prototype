@@ -67,6 +67,8 @@ angular.module('app.controllers', [])
     })
 
     .controller('monAgendaCtrl', function ($scope, $http, $ionicPopup, utilities) {
+        $scope.colorFromEventType = utilities.colorFromEventType;
+
         // Date selected by the user (show today's events by default)
         $scope.date = new Date();
 

@@ -1,9 +1,9 @@
 <ion-view style="" class=" " id="page12" title="{{pageedit_title}}">
     <ion-content class="has-header" padding="true" ng-controller="editerUnVNementCtrl">
-        <form style="" class="list " id="editerUnVNement-form7">
+        <form style="" class="list " id="editerUnVNement-form7" name="formEdit" novalidate>
 
             <label style="" id="editerUnVNement-input3" class="item item-input ">
-                <input placeholder="Nom de l'évènement" type="text" ng-model="eventname">
+                <input placeholder="Nom de l'évènement" type="text" ng-model="eventname" required>
             </label>
 
             <label style="" id="editerUnVNement-input4" class="item item-input ">
@@ -11,11 +11,11 @@
                 <input placeholder="" type="text" ng-model="eventlieu">
             </label>
 
-            <a class=" button button-stable  button-block ">Lieu</a>
+            <!--<a class=" button button-stable  button-block ">Lieu</a>-->
 
-            <label style="" id="editerUnVNement-input5" class="item item-input ">
+            <label style="" id="editerUnVNement-input5" class="item item-input">
                 <span class="input-label">Date</span>
-                <input placeholder="" type="date" ng-model="eventdate">
+                <input placeholder="" type="date" ng-model="eventdate" required>
             </label>
 
             <label style="" id="editerUnVNement-input6" class="item item-input ">
@@ -46,7 +46,7 @@
 
             <div style="" class=" button-bar " id="editerUnVNement-button-bar4">
                 <a class=" button button-stable  button-block " id="editerUnVNement-button17" ui-sref="tabsController.monAgenda">Annuler</a>
-                <button class=" button button-balanced  button-block " id="editerUnVNement-button19" ui-sref="tabsController.monAgenda" ng-click="submit(eventname,eventlieu,eventdate,eventtimed,eventtimef,eventdesc,eventshow,eventag,eventshow)" >Enregistrer</button>
+                <button class=" button button-balanced  button-block " id="editerUnVNement-button19" ui-sref="tabsController.monAgenda" ng-disabled="!formEdit.$valid" ng-click="submit(eventname,eventlieu,eventdate,eventtimed,eventtimef,eventdesc,eventshow,eventag,eventshow)" >Enregistrer</button>
             </div>
         </form>
     </ion-content>
