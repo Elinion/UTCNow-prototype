@@ -40,6 +40,7 @@ angular.module('app.controllers', [])
             url: 'http://localhost:8080/api/events'
         }).then(function successCallback(data) {
             $scope.events = data.data;
+            $scope.updateMatchingEvents($scope.search);
         }, function errorCallback(response) {
             console.log('Error: ' + response);
         });
@@ -69,6 +70,7 @@ angular.module('app.controllers', [])
     .controller('monAgendaCtrl', function ($scope, $http, $ionicPopup, utilities) {
         // Date selected by the user (show today's events by default)
         $scope.date = new Date();
+        $scope.platform = ionic.Platform.platform();
 
         // An array of all events (of all times)
         $scope.events = {};
@@ -77,13 +79,15 @@ angular.module('app.controllers', [])
         $scope.selectedDateEvents = {};
 
         // Automatically update selectedDateEvents whenever a new date is selected
-        $scope.$watch('date', function (newValue, oldValue) {
+        $scope.$watch('date', $scope.filtreDate = function (newValue, oldValue) {
             $scope.selectedDateEvents = [];
-            angular.forEach($scope.events, function (value, key) {
-                if (utilities.dateWithoutTime(newValue).getTime() == utilities.dateWithoutTime(value.start).getTime()) {
-                    $scope.selectedDateEvents.push(value);
-                }
-            });
+            if(newValue != undefined){
+                angular.forEach($scope.events, function (value, key) {
+                    if (utilities.dateWithoutTime(newValue).getTime() == utilities.dateWithoutTime(value.start).getTime()) {
+                        $scope.selectedDateEvents.push(value);
+                    }
+                });
+            }
         }, true);
 
         // Request all events
@@ -92,6 +96,7 @@ angular.module('app.controllers', [])
             url: 'http://utcnow.herokuapp.com/api/events'
         }).then(function successCallback(data) {
             $scope.events = data.data;
+            $scope.filtreDate($scope.date);
         }, function errorCallback(response) {
             console.log('Error: ' + response);
         });
