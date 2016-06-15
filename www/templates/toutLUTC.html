@@ -7,7 +7,14 @@
                        ng-change="updateMatchingEvents(search)">
             </label>
         </ion-list>
-
+        <div ng-if="events.length == null">
+            <div class="card">
+                <div class="item item-icon-left item-calm item-text-wrap">
+                    <ion-spinner class="icon spinner-light" icon="spiral"></ion-spinner>
+                    <h2>Chargement des évènements</h2>
+                </div>
+            </div>
+        </div>
         <div ng-repeat="event in matchingEvents">
             <div class="card" ui-sref="tabsController.carteVNement({idevent: '{{event.id_event}}'})">
                 <div class="item item-icon-left {{colorFromEventType('item',event.type)}}">

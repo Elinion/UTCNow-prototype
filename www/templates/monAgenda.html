@@ -9,10 +9,18 @@
         </div>
     </div>
     <ion-content class="has-header has-subheader has-footer" ng-class="{'has-subfooter': platform == 'android', 'has-subheader': platform != 'android'}" padding="true">
-        <div ng-if="selectedDateEvents.length == 0">
+        <div ng-if="selectedDateEvents.length == 0 && events.length != null">
             <div class="card">
                 <div class="item-calm item item-text-wrap">
-                    Aucun evenement prevu a ce jour.
+                    Aucun évènement prévu ce jour
+                </div>
+            </div>
+        </div>
+        <div ng-if="events.length == null">
+            <div class="card">
+                <div class="item item-icon-left item-calm item-text-wrap">
+                    <ion-spinner class="icon spinner-light" icon="spiral"></ion-spinner>
+                    <h2>Chargement des évènements</h2>
                 </div>
             </div>
         </div>
