@@ -1,5 +1,9 @@
 <ion-view style="" class=" " id="page2" title="Tout à l'UTC">
     <ion-content class="has-header" padding="true">
+        <ion-refresher
+                pulling-text="Tirez pour rafraîchir..."
+                on-refresh="loadHttp()">
+        </ion-refresher>
         <ion-list style="" class=" " id="agendasFavoris-list7">
             <label style="" class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>

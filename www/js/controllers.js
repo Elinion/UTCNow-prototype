@@ -34,15 +34,22 @@ angular.module('app.controllers', [])
         $scope.matchingEvents = [];
 
         // Request all events
-        $http({
-            method: 'GET',
-            url: 'http://utcnow.herokuapp.com/api/events'
-        }).then(function successCallback(data) {
-            $scope.events = data.data;
-            $scope.updateMatchingEvents($scope.search);
-        }, function errorCallback(response) {
-            console.log('Error: ' + response);
-        });
+        $scope.loadHttp = function(){
+            $http({
+                method: 'GET',
+                url: 'http://utcnow.herokuapp.com/api/events'
+            }).then(function successCallback(data) {
+                $scope.events = data.data;
+                //Fire filtering once loaded
+                $scope.updateMatchingEvents($scope.search);
+                //Stop the ion-refresher from spinning
+                $scope.$broadcast('scroll.refreshComplete');
+            }, function errorCallback(response) {
+                console.log('Error: ' + response);
+            });
+        }
+        //Fire load at beginning
+        $scope.loadHttp();
 
         // Update the events showed when the users modifies the search field
         $scope.updateMatchingEvents = function (newValue) {
@@ -91,16 +98,24 @@ angular.module('app.controllers', [])
         $scope.$watch('date', updateSelectedDayEvents, true);
 
         // Request all events
-        $http({
-            method: 'GET',
-            url: 'http://utcnow.herokuapp.com/api/events'
-        }).then(function successCallback(data) {
-            $scope.events = data.data;
-            updateSelectedDayEvents($scope.date);
-        }, function errorCallback(response) {
-            console.log('Error: ' + response);
-        });
+        $scope.loadHttp = function() {
+            $http({
+                method: 'GET',
+                url: 'http://utcnow.herokuapp.com/api/events'
+            }).then(function successCallback(data) {
+                $scope.events = data.data;
+                //Fire filtering once loaded
+                updateSelectedDayEvents($scope.date);
+                //Stop the ion-refresher from spinning
+                $scope.$broadcast('scroll.refreshComplete');
+            }, function errorCallback(response) {
+                console.log('Error: ' + response);
+            });
+        };
+        //Fire load at beginning
+        $scope.loadHttp();
 
+        //Popup to choose the date with navigation bar
         $scope.showDatePopup = function () {
             $scope.data = {};
             $scope.data.date = $scope.date;

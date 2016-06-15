@@ -9,6 +9,10 @@
         </div>
     </div>
     <ion-content class="has-header has-subheader has-footer" ng-class="{'has-subfooter': platform == 'android', 'has-subheader': platform != 'android'}" padding="true">
+        <ion-refresher
+                pulling-text="Tirez pour rafraîchir..."
+                on-refresh="loadHttp()">
+        </ion-refresher>
         <div ng-if="selectedDateEvents.length == 0 && events.length != null">
             <div class="card">
                 <div class="item-calm item item-text-wrap">
