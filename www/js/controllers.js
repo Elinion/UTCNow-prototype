@@ -42,10 +42,11 @@ angular.module('app.controllers', [])
                 $scope.events = data.data;
                 //Fire filtering once loaded
                 $scope.updateMatchingEvents($scope.search);
-                //Stop the ion-refresher from spinning
-                $scope.$broadcast('scroll.refreshComplete');
             }, function errorCallback(response) {
                 console.log('Error: ' + response);
+            }).finally(function(){
+                //Stop the ion-refresher from spinning
+                $scope.$broadcast('scroll.refreshComplete');
             });
         }
         //Fire load at beginning
@@ -110,6 +111,9 @@ angular.module('app.controllers', [])
                 $scope.$broadcast('scroll.refreshComplete');
             }, function errorCallback(response) {
                 console.log('Error: ' + response);
+            }).finally(function(){
+                //Stop the ion-refresher from spinning
+                $scope.$broadcast('scroll.refreshComplete');
             });
         };
         //Fire load at beginning
@@ -181,26 +185,32 @@ angular.module('app.controllers', [])
         $scope.eventCard = {};
         $scope.participantsEvent = {};
 
-        // Request the event
-        $http({
-            method: 'GET',
-            url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.idevent
-        }).then(function successCallback(data) {
-            $scope.eventCard = data.data[0];
-        }, function errorCallback(response) {
-            console.log('Error: ' + response);
-        });
+        $scope.loadHttp = function(){
+            // Request the event
+            $http({
+                method: 'GET',
+                url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.idevent
+            }).then(function successCallback(data) {
+                $scope.eventCard = data.data[0];
+            }, function errorCallback(response) {
+                console.log('Error: ' + response);
+            }).finally(function(){
+                //Stop the ion-refresher from spinning
+                $scope.$broadcast('scroll.refreshComplete');
+            });
 
-        //Request participants de l'event
-        $http({
-            method: 'GET',
-            url: 'http://utcnow.herokuapp.com/api/users/?id_event=' + $scope.idevent
-        }).then(function successCallback(data) {
-            $scope.participantsEvent = data;
-        }, function errorCallback(response) {
-            console.log('Error: ' + response);
-        });
-
+            //Request participants de l'event
+            $http({
+                method: 'GET',
+                url: 'http://utcnow.herokuapp.com/api/users/?id_event=' + $scope.idevent
+            }).then(function successCallback(data) {
+                $scope.participantsEvent = data;
+            }, function errorCallback(response) {
+                console.log('Error: ' + response);
+            });
+        }
+        //Fire load at beginning
+        $scope.loadHttp();
 
         $scope.delete = function () {
 

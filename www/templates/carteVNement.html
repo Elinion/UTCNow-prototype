@@ -3,6 +3,10 @@
         {{eventCard.name}}
     </ion-nav-title>
     <ion-content class="has-header" padding="true">
+        <ion-refresher
+                pulling-text="Tirez pour rafraîchir..."
+                on-refresh="loadHttp()">
+        </ion-refresher>
         <div style="" id="carteVNement-card2" class="list card ">
             <div class="item item-icon-left">{{eventCard.name}}
                 <i class="icon ion-calendar"></i>
