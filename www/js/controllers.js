@@ -180,7 +180,7 @@ angular.module('app.controllers', [])
 
     })
 
-    .controller('carteVNementCtrl', function ($scope, $stateParams, $http) {
+    .controller('carteVNementCtrl', function ($scope, $stateParams, $http, utilities) {
         $scope.idevent = $stateParams.idevent;
         $scope.eventCard = {};
         $scope.participantsEvent = {};
@@ -228,6 +228,7 @@ angular.module('app.controllers', [])
             });
         }
 
+        $scope.colorFromEventType = utilities.colorFromEventType;
 
     })
 
