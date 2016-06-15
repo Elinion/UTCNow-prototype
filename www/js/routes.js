@@ -41,7 +41,7 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController', {
-    url: '/page1',
+    url: '/utcnowtabs',
     templateUrl: 'templates/tabsController.html',
     abstract:true
   })
