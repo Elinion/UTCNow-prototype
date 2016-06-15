@@ -78,15 +78,17 @@ angular.module('app.controllers', [])
         // An array of all events scheduled for the selected date only
         $scope.selectedDateEvents = {};
 
-        // Automatically update selectedDateEvents whenever a new date is selected
-        $scope.$watch('date', function (newValue, oldValue) {
+        var updateSelectedDayEvents = function (newValue, oldValue) {
             $scope.selectedDateEvents = [];
             angular.forEach($scope.events, function (value, key) {
                 if (utilities.dateWithoutTime(newValue).getTime() == utilities.dateWithoutTime(value.start).getTime()) {
                     $scope.selectedDateEvents.push(value);
                 }
             });
-        }, true);
+        };
+
+        // Automatically update selectedDateEvents whenever a new date is selected
+        $scope.$watch('date', updateSelectedDayEvents, true);
 
         // Request all events
         $http({
@@ -94,6 +96,7 @@ angular.module('app.controllers', [])
             url: 'http://utcnow.herokuapp.com/api/events'
         }).then(function successCallback(data) {
             $scope.events = data.data;
+            updateSelectedDayEvents($scope.date);
         }, function errorCallback(response) {
             console.log('Error: ' + response);
         });
