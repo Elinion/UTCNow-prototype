@@ -5,7 +5,7 @@
     <ion-content class="has-header" padding="true">
         <ion-refresher
                 pulling-text="Tirez pour rafraîchir..."
-                on-refresh="loadHttp()">
+                on-refresh="loadEvents()">
         </ion-refresher>
         <div style="" id="carteVNement-card2" class="list card ">
             <div class="item item-icon-left {{colorFromEventType('item',eventCard.type)}}">{{eventCard.name}}

@@ -203,7 +203,7 @@ angular.module('app.controllers', [])
 
     })
 
-    .controller('carteVNementCtrl', function ($scope, $stateParams, $http, utilities) {
+    .controller('carteVNementCtrl', function ($scope, $stateParams, $http, $state, utilities) {
         $scope.event = {};
         $scope.event.id = $stateParams.eventId;
         $scope.eventCard = {};
@@ -245,7 +245,7 @@ angular.module('app.controllers', [])
                 url: 'https://utcnow.herokuapp.com/api/events?id=' + $scope.event.id,
                 header: {"Content-Type": "text/plain"}
             }).then(function successCallback(data) {
-                alert("it works !!!");
+                $state.go('tabsController.toutLUTC', {}, { reload: true });
             }, function errorCallback(data) {
                 alert("buuuug !!!");
                 console.log('Error: ' + data.toString());
@@ -326,6 +326,7 @@ angular.module('app.controllers', [])
                     method: 'POST',
                     url: 'http://utcnow.herokuapp.com/api/events?name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
                 }).then(function successCallback(data) {
+                    $state.go('tabsController.toutLUTC', {}, { reload: true });
                 }, function errorCallback(data) {
                     console.log('Error: ' + data.toString());
                 });
