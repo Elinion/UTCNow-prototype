@@ -252,6 +252,10 @@ angular.module('app.controllers', [])
             });
         }
 
+        $scope.formatDate = function(date) {
+
+        }
+
         $scope.colorFromEventType = utilities.colorFromEventType;
 
     })
@@ -262,6 +266,18 @@ angular.module('app.controllers', [])
         $scope.event.id = $stateParams.eventId;
         $scope.eventCard = {};
 
+        $scope.fetchLocations = function() {
+            // Get locations
+            $http({
+                method: 'GET',
+                url: 'http://utcnow.herokuapp.com/api/locations'
+            }).then(function successCallback(data) {
+                $scope.locations = data.data;
+            }, function errorCallback(response) {
+                console.log('Error: ' + response);
+            });
+        }
+
         if ($scope.event.id != '') {
             $scope.pageedit_title = "Editer l'évènement";
             // Request the event
@@ -270,7 +286,6 @@ angular.module('app.controllers', [])
                 url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.event.id
             }).then(function successCallback(data) {
                 $scope.eventCard = data.data[0];
-
                 $scope.event.name = $scope.eventCard.name;
                 $scope.event.date = new Date($scope.eventCard.start);
                 $scope.event.startTime = new Date($scope.eventCard.start);
@@ -278,6 +293,7 @@ angular.module('app.controllers', [])
                 $scope.event.description = $scope.eventCard.description;
                 $scope.event.location = $scope.eventCard.location;
 
+                $scope.fetchLocations();
             }, function errorCallback(response) {
                 console.log('Error: ' + response);
             });
@@ -296,10 +312,10 @@ angular.module('app.controllers', [])
             var year = $scope.event.date.getFullYear();
             var month = $scope.event.date.getMonth();
             var date = $scope.event.date.getDate();
-            var startHours = $scope.event.startTime.getHours();
-            var startMinutes = $scope.event.startTime.getMinutes();
-            var endHours = $scope.event.endTime.getHours();
-            var endMinutes = $scope.event.endTime.getMinutes();
+            var startHours = $scope.event.startTime.getHours() || 0;
+            var startMinutes = $scope.event.startTime.getMinutes() || 0;
+            var endHours = $scope.event.endTime.getHours() || 0;
+            var endMinutes = $scope.event.endTime.getMinutes() || 0;
 
             // Format start date
             var startDate = new Date(year, month, date, startHours + 2, startMinutes).toISOString();
@@ -324,7 +340,7 @@ angular.module('app.controllers', [])
                 var url = host + name + '&' + start + '&' + end + '&' + description;
                 $http({
                     method: 'POST',
-                    url: 'http://utcnow.herokuapp.com/api/events?name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
+                    url: url
                 }).then(function successCallback(data) {
                     $state.go('tabsController.toutLUTC', {}, { reload: true });
                 }, function errorCallback(data) {

@@ -6,9 +6,12 @@
                 <input placeholder="Nom de l'évènement" type="text" ng-model="event.name" required>
             </label>
 
-            <label style="" id="editerUnVNement-input4" class="item item-input ">
+            <label style="" id="locationLabel" class="item item-select ">
                 <span class="input-label">Lieu</span>
-                <input placeholder="" type="text" ng-model="event.location">
+                <select name="location" id="locationSelect"
+                        ng-options="location.name for location in locations track by location.id_location"
+                        ng-model="event.location">
+                </select>
             </label>
 
             <!--<a class=" button button-stable  button-block ">Lieu</a>-->
@@ -29,10 +32,13 @@
             </label>
 
             <label style="" id="editerUnVNement-textarea2" class="item item-input ">
-                <span class="input-label">Description</span><textarea placeholder="" ng-model="event.description"></textarea>
+                <span class="input-label">Description</span><textarea placeholder=""
+                                                                      ng-model="event.description"></textarea>
             </label>
 
-            <ion-toggle style="" class=" " id="editerUnVNement-toggle2" toggle-class="toggle-positive" ng-checked="false" ng-model="event.show">Montrer dans l'agenda Global</ion-toggle>
+            <ion-toggle style="" class=" " id="editerUnVNement-toggle2" toggle-class="toggle-positive"
+                        ng-checked="false" ng-model="event.show">Montrer dans l'agenda Global
+            </ion-toggle>
             <label style="" id="editerUnVNement-select2" class="item item-select ">
                 <span class="input-label">Choisir l'agenda</span>
                 <select ng-model="event.tag">
@@ -45,8 +51,12 @@
             </label>
 
             <div style="" class=" button-bar " id="editerUnVNement-button-bar4">
-                <a class=" button button-stable  button-block " id="editerUnVNement-button17" ui-sref="tabsController.monAgenda">Annuler</a>
-                <button class=" button button-balanced  button-block " id="editerUnVNement-button19" ui-sref="tabsController.monAgenda" ng-disabled="!formEdit.$valid" ng-click="editEvent()" >Enregistrer</button>
+                <a class=" button button-stable  button-block " id="editerUnVNement-button17"
+                   ui-sref="tabsController.monAgenda">Annuler</a>
+                <button class=" button button-balanced  button-block " id="editerUnVNement-button19"
+                        ui-sref="tabsController.monAgenda" ng-disabled="!formEdit.$valid" ng-click="editEvent()">
+                    Enregistrer
+                </button>
             </div>
         </form>
     </ion-content>
