@@ -17,7 +17,7 @@
                 <h3 class=" " style="color: rgb(0, 0, 0);" id="carteVNement-heading3">{{eventCard.location}}</h3>
                 <p class=" " style="color: rgb(0, 0, 0);" id="carteVNement-markdown6">{{eventCard.description}}</p>
                 <div style="" class=" button-bar ">
-                    <a class=" button button-royal  button-block icon ion-edit " id="carteVNement-button24" ui-sref="tabsController.editerUnVNement({idevent: '{{idevent}}'})">Editer</a>
+                    <a class=" button button-royal  button-block icon ion-edit " id="carteVNement-button24" ui-sref="tabsController.editerUnVNement({eventId: '{{event.id}}'})">Editer</a>
                     <a class=" button button-assertive  button-block icon ion-close " id="carteVNement-button25" ng-click="delete()">Supprimer</a>
                 </div>
                 <h2 class=" " style="color: rgb(0, 0, 0);" id="carteVNement-heading2">Participants</h2>

@@ -3,39 +3,39 @@
         <form style="" class="list " id="editerUnVNement-form7" name="formEdit" novalidate>
 
             <label style="" id="editerUnVNement-input3" class="item item-input ">
-                <input placeholder="Nom de l'évènement" type="text" ng-model="eventname" required>
+                <input placeholder="Nom de l'évènement" type="text" ng-model="event.name" required>
             </label>
 
             <label style="" id="editerUnVNement-input4" class="item item-input ">
                 <span class="input-label">Lieu</span>
-                <input placeholder="" type="text" ng-model="eventlieu">
+                <input placeholder="" type="text" ng-model="event.location">
             </label>
 
             <!--<a class=" button button-stable  button-block ">Lieu</a>-->
 
             <label style="" id="editerUnVNement-input5" class="item item-input">
                 <span class="input-label">Date</span>
-                <input placeholder="" type="date" ng-model="eventdate" required>
+                <input placeholder="" type="date" ng-model="event.date" required>
             </label>
 
             <label style="" id="editerUnVNement-input6" class="item item-input ">
                 <span class="input-label">Heure début</span>
-                <input placeholder="" type="time" ng-model="eventtimed">
+                <input placeholder="" type="time" ng-model="event.startTime">
             </label>
 
             <label style="" id="editerUnVNement-input7" class="item item-input ">
                 <span class="input-label">Heure fin</span>
-                <input placeholder="" type="time" ng-model="eventtimef">
+                <input placeholder="" type="time" ng-model="event.endTime">
             </label>
 
             <label style="" id="editerUnVNement-textarea2" class="item item-input ">
-                <span class="input-label">Description</span><textarea placeholder="" ng-model="eventdesc"></textarea>
+                <span class="input-label">Description</span><textarea placeholder="" ng-model="event.description"></textarea>
             </label>
 
-            <ion-toggle style="" class=" " id="editerUnVNement-toggle2" toggle-class="toggle-positive" ng-checked="false" ng-model="eventshow">Montrer dans l'agenda Global</ion-toggle>
+            <ion-toggle style="" class=" " id="editerUnVNement-toggle2" toggle-class="toggle-positive" ng-checked="false" ng-model="event.show">Montrer dans l'agenda Global</ion-toggle>
             <label style="" id="editerUnVNement-select2" class="item item-select ">
                 <span class="input-label">Choisir l'agenda</span>
-                <select ng-model="eventag">
+                <select ng-model="event.tag">
                     <option>Personnel</option>
                     <option>Associatif</option>
                     <option>Permanence Pic'Asso</option>
@@ -46,7 +46,7 @@
 
             <div style="" class=" button-bar " id="editerUnVNement-button-bar4">
                 <a class=" button button-stable  button-block " id="editerUnVNement-button17" ui-sref="tabsController.monAgenda">Annuler</a>
-                <button class=" button button-balanced  button-block " id="editerUnVNement-button19" ui-sref="tabsController.monAgenda" ng-disabled="!formEdit.$valid" ng-click="submit(eventname,eventlieu,eventdate,eventtimed,eventtimef,eventdesc,eventshow,eventag,eventshow)" >Enregistrer</button>
+                <button class=" button button-balanced  button-block " id="editerUnVNement-button19" ui-sref="tabsController.monAgenda" ng-disabled="!formEdit.$valid" ng-click="editEvent()" >Enregistrer</button>
             </div>
         </form>
     </ion-content>

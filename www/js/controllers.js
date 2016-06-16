@@ -34,7 +34,7 @@ angular.module('app.controllers', [])
         $scope.matchingEvents = [];
 
         // Request all events
-        $scope.loadHttp = function(){
+        $scope.loadEvents = function () {
             $http({
                 method: 'GET',
                 url: 'http://utcnow.herokuapp.com/api/events'
@@ -44,13 +44,14 @@ angular.module('app.controllers', [])
                 $scope.updateMatchingEvents($scope.search);
             }, function errorCallback(response) {
                 console.log('Error: ' + response);
-            }).finally(function(){
+            }).finally(function () {
                 //Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
         }
+
         //Fire load at beginning
-        $scope.loadHttp();
+        $scope.loadEvents();
 
         // Update the events showed when the users modifies the search field
         $scope.updateMatchingEvents = function (newValue) {
@@ -99,7 +100,7 @@ angular.module('app.controllers', [])
         $scope.$watch('date', updateSelectedDayEvents, true);
 
         // Request all events
-        $scope.loadHttp = function() {
+        $scope.loadEvents = function () {
             $http({
                 method: 'GET',
                 url: 'http://utcnow.herokuapp.com/api/events'
@@ -111,13 +112,13 @@ angular.module('app.controllers', [])
                 $scope.$broadcast('scroll.refreshComplete');
             }, function errorCallback(response) {
                 console.log('Error: ' + response);
-            }).finally(function(){
+            }).finally(function () {
                 //Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
         };
         //Fire load at beginning
-        $scope.loadHttp();
+        $scope.loadEvents();
 
         //Popup to choose the date with navigation bar
         $scope.showDatePopup = function () {
@@ -162,18 +163,40 @@ angular.module('app.controllers', [])
 
     })
 
-    .controller('bienvenueCtrl', function ($scope) {
+    .controller('authenticate', function ($location) {
+        alert('banzai');
+        var ticket = $location.search('ticket');
+        alert('ticket');
+    })
 
+    .controller('homeCtrl', function ($scope, $http) {
+        // Sign in to UTCNow's server
+        // It the authentication is successful, the server will return a token that will be used within this application
+        $scope.signIn = function () {
+            // Send user credentials to UTCNow's server
+            var url = 'http://localhost:8080/authenticate';
+            var data = {
+                username: $scope.username,
+                password: $scope.password
+            };
+            $http({
+                method: 'POST',
+                url: url,
+                data: data
+            }).then(function successCallback(data) {
+                console.log(data);
+            }, function errorCallback(data) {
+                console.log('Error: ' + data.toString());
+            });
+        };
     })
 
     .controller('paramTresCtrl', function ($scope) {
-
     })
 
     .controller('ProposCtrl', function ($scope) {
 
     })
-
 
     .controller('defaultAgendaCtrl', function ($scope) {
 
@@ -181,20 +204,21 @@ angular.module('app.controllers', [])
     })
 
     .controller('carteVNementCtrl', function ($scope, $stateParams, $http) {
-        $scope.idevent = $stateParams.idevent;
+        $scope.event = {};
+        $scope.event.id = $stateParams.eventId;
         $scope.eventCard = {};
         $scope.participantsEvent = {};
 
-        $scope.loadHttp = function(){
+        $scope.loadEvents = function () {
             // Request the event
             $http({
                 method: 'GET',
-                url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.idevent
+                url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.event.id
             }).then(function successCallback(data) {
                 $scope.eventCard = data.data[0];
             }, function errorCallback(response) {
                 console.log('Error: ' + response);
-            }).finally(function(){
+            }).finally(function () {
                 //Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
@@ -202,7 +226,7 @@ angular.module('app.controllers', [])
             //Request participants de l'event
             $http({
                 method: 'GET',
-                url: 'http://utcnow.herokuapp.com/api/users/?id_event=' + $scope.idevent
+                url: 'http://utcnow.herokuapp.com/api/users/?id_event=' + $scope.event.id
             }).then(function successCallback(data) {
                 $scope.participantsEvent = data;
             }, function errorCallback(response) {
@@ -210,7 +234,7 @@ angular.module('app.controllers', [])
             });
         }
         //Fire load at beginning
-        $scope.loadHttp();
+        $scope.loadEvents();
 
         $scope.delete = function () {
 
@@ -218,7 +242,7 @@ angular.module('app.controllers', [])
             $http.defaults.headers.delete = {"Content-Type": "application/json;charset=utf-8"}
             $http({
                 method: 'DELETE',
-                url: 'https://utcnow.herokuapp.com/api/events?id=' + $scope.idevent,
+                url: 'https://utcnow.herokuapp.com/api/events?id=' + $scope.event.id,
                 header: {"Content-Type": "text/plain"}
             }).then(function successCallback(data) {
                 alert("it works !!!");
@@ -231,26 +255,27 @@ angular.module('app.controllers', [])
 
     })
 
-
-    .controller('editerUnVNementCtrl', function ($scope, $http, $stateParams) {
-        $scope.idevent = $stateParams.idevent;
+    .controller('editerUnVNementCtrl', function ($scope, $http, $stateParams, $state) {
+        $scope.event = {};
+        console.log($stateParams);
+        $scope.event.id = $stateParams.eventId;
         $scope.eventCard = {};
 
-        if ($scope.idevent != '') {
+        if ($scope.event.id != '') {
             $scope.pageedit_title = "Editer l'évènement";
             // Request the event
             $http({
                 method: 'GET',
-                url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.idevent
+                url: 'http://utcnow.herokuapp.com/api/events/?id=' + $scope.event.id
             }).then(function successCallback(data) {
                 $scope.eventCard = data.data[0];
 
-                $scope.eventname = $scope.eventCard.name;
-                $scope.eventdate = new Date($scope.eventCard.start);
-                $scope.eventtimed = new Date($scope.eventCard.start);
-                $scope.eventtimef = new Date($scope.eventCard.end);
-                $scope.eventdesc = $scope.eventCard.description;
-                $scope.eventlieu = $scope.eventCard.location;
+                $scope.event.name = $scope.eventCard.name;
+                $scope.event.date = new Date($scope.eventCard.start);
+                $scope.event.startTime = new Date($scope.eventCard.start);
+                $scope.event.endTime = new Date($scope.eventCard.end);
+                $scope.event.description = $scope.eventCard.description;
+                $scope.event.location = $scope.eventCard.location;
 
             }, function errorCallback(response) {
                 console.log('Error: ' + response);
@@ -261,10 +286,62 @@ angular.module('app.controllers', [])
             d.setMinutes(0);
             d.setSeconds(0);
             d.setMilliseconds(0);
-            $scope.eventdate = $scope.eventtimed = $scope.eventtimef = d;
+            $scope.event.date = $scope.event.startTime = $scope.event.endTime = d;
 
         }
 
+        $scope.editEvent = function () {
+            // Retrieve date parameters
+            var year = $scope.event.date.getFullYear();
+            var month = $scope.event.date.getMonth();
+            var date = $scope.event.date.getDate();
+            var startHours = $scope.event.startTime.getHours();
+            var startMinutes = $scope.event.startTime.getMinutes();
+            var endHours = $scope.event.endTime.getHours();
+            var endMinutes = $scope.event.endTime.getMinutes();
+
+            // Format start date
+            var startDate = new Date(year, month, date, startHours + 2, startMinutes).toISOString();
+            startDate = startDate.replace("T", " ");
+            startDate = startDate.replace(".000Z", "");
+
+            // Format end date
+            var endDate = new Date(year, month, date, endHours + 2, endMinutes).toISOString();
+            endDate = endDate.replace("T", " ");
+            endDate = endDate.replace(".000Z", "");
+
+            // API parameters
+            var host = 'http://utcnow.herokuapp.com/api/events?';
+            var id = 'id=' + $scope.event.id;
+            var name = 'name=' + $scope.event.name;
+            var start = 'start=' + startDate;
+            var end = 'end=' + endDate;
+            var description = 'desc=' + $scope.event.description;
+
+            // If the event does not exist yet, create a new one
+            if ($scope.event.id == '') {
+                var url = host + name + '&' + start + '&' + end + '&' + description;
+                $http({
+                    method: 'POST',
+                    url: 'http://utcnow.herokuapp.com/api/events?name=' + eventname + '&start=' + sDateDebut + '&end=' + sDateFin + '&desc=' + eventdesc
+                }).then(function successCallback(data) {
+                }, function errorCallback(data) {
+                    console.log('Error: ' + data.toString());
+                });
+            }
+            // Otherwise update that event
+            else {
+                var url = host + id + '&' + name + '&' + start + '&' + end + '&' + description;
+                $http({
+                    method: 'PUT',
+                    url: url
+                }).then(function successCallback(data) {
+                    $state.go('tabsController.toutLUTC', {}, { reload: true });
+                }, function errorCallback(data) {
+                    console.log('Error: ' + data.toString());
+                });
+            }
+        };
 
         $scope.submit = function (eventname, eventlieu, eventdate, eventtimed, eventtimef, eventdesc, eventshow, eventag, eventshow) {
 
@@ -299,7 +376,9 @@ angular.module('app.controllers', [])
                     console.log('Error: ' + data.toString());
                 });
             }
+
+
         }
 
-
     })
+

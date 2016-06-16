@@ -1,4 +1,4 @@
-<ion-view style="" class=" " id="page2" title="Tout à l'UTC">
+<ion-view style="" class="" id="page2" title="Tout à l'UTC">
     <ion-content class="has-header" padding="true">
         <ion-refresher
                 pulling-text="Tirez pour rafraîchir..."
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div ng-repeat="event in matchingEvents">
-            <div class="card" ui-sref="tabsController.carteVNement({idevent: '{{event.id_event}}'})">
+            <div class="card" ui-sref="tabsController.carteVNement({eventId: '{{event.id_event}}'})">
                 <div class="item item-icon-left {{colorFromEventType('item',event.type)}}">
                     <i class="icon ion-calendar"></i>
                     <h2>{{event.name}}</h2>
