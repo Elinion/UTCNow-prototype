@@ -203,7 +203,7 @@ angular.module('app.controllers', [])
 
     })
 
-    .controller('carteVNementCtrl', function ($scope, $stateParams, $http) {
+    .controller('carteVNementCtrl', function ($scope, $stateParams, $http, utilities) {
         $scope.event = {};
         $scope.event.id = $stateParams.eventId;
         $scope.eventCard = {};
