@@ -39,11 +39,11 @@ angular.module('app.routes', [])
                 }
             })
 
-            .state('tabsController', {
-                url: '/page1',
-                templateUrl: 'templates/tabsController.html',
-                abstract: true
-            })
+  .state('tabsController', {
+    url: '/utcnowtabs',
+    templateUrl: 'templates/tabsController.html',
+    abstract:true
+  })
 
             .state('bienvenue', {
                 url: '/home',

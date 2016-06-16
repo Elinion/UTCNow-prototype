@@ -252,6 +252,7 @@ angular.module('app.controllers', [])
             });
         }
 
+        $scope.colorFromEventType = utilities.colorFromEventType;
 
     })
 
